@@ -44,7 +44,7 @@ class WelcomeEmailNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Hello'.$this->user->name.', welcome to LT-Booking')
+                    ->line('Hello '.$this->user->name.', Welcome in LT-Booking')
                     ->action('Open', url('/'))
                     ->line('Thank you for using our application!');
     }

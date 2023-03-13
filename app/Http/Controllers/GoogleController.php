@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
+use App\Notifications\WelcomeEmailNotification;
 
 class GoogleController extends Controller
 {
@@ -31,6 +32,7 @@ class GoogleController extends Controller
                     'email' => $user->getEmail(),
                     'password' => Hash::make($user->getName().'@'.$user->getId())
                 ]);
+                $saveUser->notify(new WelcomeEmailNotification($saveUser));
             }else{
                 $saveUser = User::where('email',  $user->getEmail())->update([
                     'google_id' => $user->getId(),

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NotifyMail;
 use App\Models\Booking;
 use App\Models\Lt_rooms;
 use App\Models\Timeslots;
 use App\Models\Timetable;
+use App\Models\User;
+use App\Notifications\Admininfo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +24,9 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $short_time=Timeslots::where('is_active','0')->get();
-        $time=Timeslots::where('is_active','1')->get();
-        return view('users.create_booking',compact('time','short_time'));
+        $time_0=Timeslots::where('is_active',null)->orWhere('is_active',"0")->get();
+        $time_1=Timeslots::where('is_active',null)->orWhere('is_active',"1")->get();
+        return view('users.create_booking',compact('time_0','time_1'));
     }
 
     /**
@@ -125,14 +128,16 @@ class BookingController extends Controller
     }
     public function applyRequest(Request $request)
     {
-        $book='';
-        // $book=Booking::create([
-        //     'date'=>date('Y-m-d',strtotime($request->date)),
-        //     'user_id'=>Auth::user()->id,
-        //     'timeslots_id'=>$request->timeslots_id,
-        //     'lt_id'=>$request->lt_id
-        // ]);
+        // $book='';
+        $book=Booking::create([
+            'date'=>date('Y-m-d',strtotime($request->date)),
+            'user_id'=>Auth::user()->id,
+            'timeslots_id'=>$request->timeslots_id,
+            'lt_id'=>$request->lt_id
+        ]);
         if ($book) {
+            $admin=User::find(1);
+            $admin->notify(new Admininfo($book));
             return response()->json(['status'=>200,'msg'=>'Booked successfully']);
         }
         // return response()

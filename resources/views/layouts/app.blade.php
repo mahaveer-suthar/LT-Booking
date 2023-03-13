@@ -45,7 +45,7 @@
         @csrf
     </form>
     
-    <a class="p-0"
+    <a class="p-0 "
         href="{{ route('logout') }}"onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
             class="fa fa-fw fa-test" data-feather="log-out"></i>Log out</a>
       </nav>
@@ -70,8 +70,8 @@
                         <a href="{{ route('user.home') }}" class="fxt-logo"><img src="{{asset('img/logo-9.svg')}}" alt="Logo"></a>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <a type="button" href="{{route('user.booking.index')}}" class="fxt-btn">Book an LT</a>
-                        <a href="{{route('user.booking.show',Auth::user()->id)}}" class="fxt-btn px-3" style="background-color: #3221d2;">Booking Status</a>
+                        <button type="button" onclick="location.href='{{route('user.booking.index')}}'" class="fxt-btn">Book an LT</button>
+                        <button type="button" onclick="location.href='{{route('user.booking.show',Auth::user()->id)}}'" class="fxt-btn px-3" style="background-color: #3221d2;">Booking Status</button>
                     </div>
                 </div>
                 <div class="col-lg-8">

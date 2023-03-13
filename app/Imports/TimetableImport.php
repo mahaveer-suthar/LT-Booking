@@ -2,12 +2,15 @@
 
 namespace App\Imports;
 
+use App\Models\Lt_rooms;
+use App\Models\Timeslots;
 use App\Models\Timetable;
+use Database\Seeders\LtSeeder;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class TimetableImport implements ToModel,WithHeadingRow,WithChunkReading
+class TimetableImport implements ToModel,WithHeadingRow
 {
     /**
     * @param array $row
@@ -17,39 +20,12 @@ class TimetableImport implements ToModel,WithHeadingRow,WithChunkReading
     
     public function model(array $row)
     {
-        // dd(date('N', strtotime($row('day'))));
-    dd($row);           
-        // switch ($row('L')) {
-        //     case 'monday':
-        //         $day=1;
-        //         break;
-        //     case 'tuesday':
-        //         $day=1;
-        //         break;
-        //     case 'monday':
-        //         $day=1;
-        //         break;
-        //     case 'monday':
-        //         $day=1;
-        //         break;
-        //     case 'monday':
-        //         $day=1;
-        //         break;
-            
-        //     default:
-        //         # code...
-        //         break;
-        // }
+        // dd($row);
+        // dd(Lt_rooms::where('room_name',$row['lt_name'])->first()->id);
         return new Timetable([
-            // 'day'=>date('N', strtotime($row('day'))),
-            'day'=>1,
-            'timeslots_id'=>1,
-            'lt_id'=>1,
-            
+            'day'=>date('N', strtotime($row['day'])),
+            'timeslots_id'=>Timeslots::where('start_time',gmdate("H:i:s", ($row['start_time']-25579) * 86400))->where('end_time',gmdate("H:i:s", ($row['end_time']-25579) * 86400))->first()->id,
+            'lt_id'=>Lt_rooms::where('room_name',$row['lt_name'])->first()->id,
         ]);
-    }
-    public function chunkSize(): int
-    {
-        return 1000;
     }
 }

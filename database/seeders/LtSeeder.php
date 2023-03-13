@@ -15,7 +15,7 @@ class LtSeeder extends Seeder
     public function run()
     
     {
-        $LT=['01','02','03','04','05','06','07','08','09','10','11','12','13','16','17','18','19'];
+        $LT=['1','2','3','4','5','6','7','8','9','10','11','12','13','16','17','18','19'];
         foreach ($LT as $key => $value) {
             Lt_rooms::create([
                 'room_name'=>'LT-'.$value

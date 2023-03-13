@@ -21,6 +21,8 @@ use App\Http\Controllers\GoogleController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// Made By: Akshat Mathur (20UCC014), Aviral Taneja (20UCC027)
 Route::get('/',function(){
     return redirect(route('login'));
 });

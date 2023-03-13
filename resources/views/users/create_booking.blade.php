@@ -47,7 +47,9 @@
 @section('jquery')
     <script>
         $(function() {
-            $("#date").datepicker();
+            $("#date").datepicker({
+                minDate: 0
+            });
         });
         @if (Session::has('success'))
             toastr.success('{{ Session::get('success') }}');
@@ -60,24 +62,23 @@
     <script type="text/javascript">
         $(function() {
             $("#date").change(function() {
-                var timeslots = "{{ $time }}";
                 var selDate = new Date(this.value);
-                var option = '';
+                // alert(selDate.getDay());
                 $('#validationCustom01').html('');
                 if (selDate.getDay() == 2 || selDate.getDay() ==
-                    4) { 
-                    @foreach ($short_time as $slots)
-                        $('<option/>').val('{{ $slots->id }}').html(
-                            '{{ Carbon\Carbon::parse($slots['start_time'])->format('h:i A') }} To {{ Carbon\Carbon::parse($slots['end_time'])->format('h:i A') }}'
-                            ).appendTo('#validationCustom01');
-                    @endforeach
-                } else{
-                    $('#validationCustom01').empty();
-                @foreach ($time as $slots)
-                    $('<option/>').val('{{ $slots->id }}').html(
-                        '{{ Carbon\Carbon::parse($slots['start_time'])->format('h:i A') }} To {{ Carbon\Carbon::parse($slots['end_time'])->format('h:i A') }}'
+                    4) {
+                    @foreach ($time_1 as $slots_0)
+                        $('<option/>').val('{{ $slots_0->id }}').html(
+                            '{{ Carbon\Carbon::parse($slots_0['start_time'])->format('h:i A') }} To {{ Carbon\Carbon::parse($slots_0['end_time'])->format('h:i A') }}'
                         ).appendTo('#validationCustom01');
-                @endforeach
+                    @endforeach
+                } else {
+                    $('#validationCustom01').html('');
+                    @foreach ($time_0 as $slots_1)
+                        $('<option/>').val('{{ $slots_1->id }}').html(
+                            '{{ Carbon\Carbon::parse($slots_1['start_time'])->format('h:i A') }} To {{ Carbon\Carbon::parse($slots_1['end_time'])->format('h:i A') }}'
+                        ).appendTo('#validationCustom01');
+                    @endforeach
                 }
             })
         });

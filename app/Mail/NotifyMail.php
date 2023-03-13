@@ -30,7 +30,8 @@ class NotifyMail extends Mailable
      */
     public function build()
     {
+        $data=$this->data;
         return $this->subject($this->subject)   
-                            ->view('admin.mail',compact($this->data));
+                            ->view('admin.mail',compact('data'));
     }
 }

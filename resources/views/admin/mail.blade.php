@@ -131,16 +131,17 @@
                                     width="100%">
                                     <tr>
                                         <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"
+                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"
                                             valign="top">
                                             <p
                                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">
-                                                Hi {{App\Models\User::find($data->id)->name }}</p>
+                                                Hi {{App\Models\User::find($data->user_id)->name}}</p>
                                             <p
                                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">
                                             </p>
                                             <p
                                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">
-                                                We are writing to inform that your booking request is approved for date
+                                                We are writing to inform that your booking request is for date
                                                 -: {{ date('d-M-Y',strtotime( $data->date))}} on
                                                 {{ date('g:i A', strtotime(App\Models\Timeslots::find($data->timeslots_id)->start_time)) }}
                                                 To

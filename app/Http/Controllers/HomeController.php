@@ -46,7 +46,6 @@ class HomeController extends Controller
             $bookings = Booking::find($request->id)->update(['status' => 'approved']);
             if ($bookings) {
                 dispatch(new EmailJob($user,$booking,'Approval'));
-                EmailJob::dispatch($user,$booking,'Approval');
                 return response()->json(['status' => 200, 'msg' => 'Approve done']);
             }
         }

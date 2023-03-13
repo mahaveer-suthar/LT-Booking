@@ -25,7 +25,7 @@
                     <tr>
                         <th scope="col">Date</th>
                         <th scope="col">Time</th>
-                        <th>Requste By</th>
+                        <th>Request By</th>
                         <th scope="col">LT Number</th>
                         <th scope="col">Booking Status</th>
                     </tr>
