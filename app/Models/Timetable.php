@@ -9,8 +9,12 @@ class Timetable extends Model
 {
     use HasFactory;
     protected $fillable=[
+        'timetablesources_id',
         'day',
         'timeslots_id',
-        'lt_id'
+        'lt_id',
+        'branch',
+        'batch',
+        'course'
     ];
 }
