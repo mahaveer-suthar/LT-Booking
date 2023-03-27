@@ -10,9 +10,15 @@
                     <label for="formFileMultiple" class="form-label">Upload File</label>
                     <input class="form-control" type="file" id="formFileMultiple" multiple name="excel_file" />
                 </div>
-                <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary" type="submit">Sumbit</button>
-                </div>
+                @if ($data)
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-danger" type="button" onclick="deleteUser({{$date->id}})">Reset Timetable</button>
+                    </div>
+                @else
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary" type="submit">Sumbit</button>
+                    </div>
+                @endif
             </form>
         </div>
     </div>
@@ -61,40 +67,40 @@
 
     <div class="card p-2">
         <div style="display: flex; justify-content: space-between;">
-            <p style="color: red">Start date -: {{date('d M Y', strtotime($date->start_date))}}</p>
-            <p style="color: red">End date -: {{date('d M Y', strtotime($date->end_date))}}</p>
+            @if (isset($date))
+                <p style="color: red">Start date -: {{ date('d M Y', strtotime($date->start_date)) }}</p>
+                <p style="color: red">End date -: {{ date('d M Y', strtotime($date->end_date)) }}</p>
+            @endif
         </div>
         <div class="table-responsive">
             <table id="table_id" cellspacing="0" width="100%"class="display">
                 <thead>
                     <tr>
-                        {{-- <th scope="col">Sr No</th> --}}
-                        <th scope="col">Day</th>
-                        <th style="width: 160px;" scope="col">Timeslots</th>
-                        <th scope="col">Room</th>
-                        <th scope="col">Course</th>
-                        <th scope="col">Branch</th>
-                        <th scope="col">Batch</th>
-                        <th scope="col">Teacher</th>
-                        <th scope="col">Designation</th>
+                        <th>Day<span></span></th>
+                        <th>Timeslots<span></span></th>
+                        <th>Room<span></span></th>
+                        <th>Course<span></span></th>
+                        <th>Branch<span></span></th>
+                        <th>Batch<span></span></th>
+                        <th>Teacher<span></span></th>
+                        <th>Designation<span></span></th>
                     </tr>
                 </thead>
                 <tbody>
                     @if ($data)
-                        @foreach ($data as $item)
-                        <tr>
-                            <td>{{$item->day}}</td>
-                            {{-- <td>{{$item->day}}</td> --}}
-                            <td>{{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->start_time)) }}
-                                -
-                                {{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->end_time)) }}</td>
-                            <td>{{ App\Models\Lt_rooms::find($item->lt_id)->room_name }}</td>
-                            <td>{{$item->course}}</td>
-                            <td>{{$item->branch}}</td>
-                            <td>{{$item->batch}}</td>
-                            <td>{{$item->teacher_name}}</td>
-                            <td>{{$item->designation}}</td>
-                        </tr>
+                        @foreach ($data->timetable as $item)
+                            <tr>
+                                <td>{{ $item->day }}</td>
+                                <td>
+                                    {{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->start_time)) }} To {{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->end_time)) }}
+                                </td>
+                                <td>{{ App\Models\Lt_rooms::find($item->lt_id)->room_name }}</td>
+                                <td>{{ $item->course }}</td>
+                                <td>{{ $item->branch }}</td>
+                                <td>{{ $item->batch }}</td>
+                                <td>{{ $item->teacher_name }}</td>
+                                <td>{{ $item->designation }}</td>
+                            </tr>
                         @endforeach
                     @endif
 
@@ -113,46 +119,98 @@
             @if (Session::has('worng'))
                 toastr.info('Ohh! Somthing Went worng Please try again');
             @endif
-            // $('#table_id').dataTable({
-            //     "columnDefs": [{
-            //         "width": "8%",
-            //         "targets": 0,
-            //         "className": "text-center"
-            //     }],
-            //     responsive: true,
-            // });
+            //for datatable and filter
+            var oTable = $('#table_id').DataTable({
+                "ordering": false,
+                fixedHeader: {
+                    header: false,
+                    footer: false
+                },
+                pagingType: "full_numbers",
+                bSort: true,
+                "order": [
+                    [0, "asc"]
+                ],
+                "lengthMenu": [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                initComplete: function() {
+                    this.api().columns().every(function() {
+                        var column = this;
+                        var select = $(
+                                '<select class="form-select form-select-sm"><option value=""></option></select>'
+                            )
+                            .appendTo($(column.header()).find('span').empty())
+                            .on({
+                                'change': function() {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                    );
 
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            // Setup - add a text input to each header cell
-            $('#table_id thead th').each(function() {
-                var title = $(this).text();
-                $(this).html('<input type="text" class="form-control"  placeholder="' + title + '" />');
+                                    column
+                                        .search(val ? '^' + val + '$' : '', true, false)
+                                        .draw();
+                                },
+                                'click': function(e) {
+                                    // stop click event bubbling
+                                    e.stopPropagation();
+                                }
+                            });
+
+                        column.data().unique().each(function(d, j) {
+                            select.append('<option value="' + d + '">' + d +
+                                '</option>')
+                        });
+                    });
+                }
+
             });
 
-            // DataTable
-            var table = $('#table_id').DataTable({"ordering": false});
+        });
 
-            // Apply the search
-            table.columns().every(function() {
-                var that = this;
 
-                $('input', this.header()).on('keypress change', function(e) {
-                    var keycode = e.which;
-                    //launch search action only when enter is pressed
-                    if (keycode == '13') {
-                        console.log('enter key pressed !')
-                        if (that.search() !== this.value) {
-                            that
-                                .search(this.value)
-                                .draw();
+        function deleteUser(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax('reset/' + id, {
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: 'DELETE',
+                        data: {
+                            "_token": "{{ csrf_token() }}"
+                        },
+                        success: function(data, status, xhr) {
+                            console.log(data);
+                            if (data.status == 200) {
+                                Swal.fire({
+                                    title: 'Deleted Successfully',
+                                    icon: 'success',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Ok'
+                                }).then((result) => {
+                                    if (result.value) {
+                                        window.location.reload()
+                                    }
+                                })
+                            }
+                        },
+                        error: function(jqXhr, textStatus, errorMessage) {
+
                         }
-                    }
+                    });
 
-                });
-            });
-        });
+                }
+            })
+        }
     </script>
 @endsection

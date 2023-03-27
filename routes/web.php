@@ -41,6 +41,7 @@ Route::group(['prefix' => '/admin','as' => 'admin.', 'middleware'=>['is_admin','
     // Route::post('/changeStatus',[Lt_roomController::class,'changeStatus'])->name('changeStatus');
     Route::get('/timetable',[TimetableController::class,'index'])->name('timetable');
     Route::post('/timetable',[TimetableController::class,'upload'])->name('upload');
+    Route::delete('/reset/{id}',[TimetableController::class,'reset'])->name('reset');
   });
 
 

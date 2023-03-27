@@ -12,6 +12,8 @@ class Timetable extends Model
         'timetablesources_id',
         'day',
         'timeslots_id',
+        'teacher_name',
+        'designation',
         'lt_id',
         'branch',
         'batch',

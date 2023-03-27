@@ -14,4 +14,7 @@ class Timetablesource extends Model
         'course',
         'is_active'
     ];
+    public function timetable(){
+        return $this->hasMany(Timetable::class,'timetablesources_id','id');
+    }
 }
