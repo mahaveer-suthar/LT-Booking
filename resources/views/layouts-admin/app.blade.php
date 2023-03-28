@@ -72,6 +72,21 @@
                             <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Timetable</span>
                         </a>
                     </li>
+                    <li class="sidebar-item">
+                        <a style="text-decoration:none" class="sidebar-link" href="{{route('admin.teachers.index')}}">
+                            <i class="align-middle" data-feather="users"></i> <span class="align-middle">Teachers</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a style="text-decoration:none" class="sidebar-link" href="{{route('admin.student.index')}}">
+                            <i class="align-middle" data-feather="users"></i> <span class="align-middle">Student Bodies</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a style="text-decoration:none" class="sidebar-link" href="{{route('admin.request.index')}}">
+                            <i class="align-middle" data-feather="git-pull-request"></i> <span class="align-middle">New Requests </span>@if (app\Models\User::where('role',4)->get()->count())<span class=" align-middle badge badge-success">{{app\Models\User::where('role',4)->get()->count()}} @endif</span>
+                        </a>
+                    </li>
 
                 </ul>
             </div>

@@ -12,7 +12,8 @@
                 </div>
                 @if ($data)
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-danger" type="button" onclick="deleteUser({{$date->id}})">Reset Timetable</button>
+                        <button class="btn btn-danger" type="button" onclick="deleteUser({{ $date->id }})">Reset
+                            Timetable</button>
                     </div>
                 @else
                     <div class="d-flex justify-content-end">
@@ -92,7 +93,9 @@
                             <tr>
                                 <td>{{ $item->day }}</td>
                                 <td>
-                                    {{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->start_time)) }} To {{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->end_time)) }}
+                                    {{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->start_time)) }}
+                                    To
+                                    {{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->end_time)) }}
                                 </td>
                                 <td>{{ App\Models\Lt_rooms::find($item->lt_id)->room_name }}</td>
                                 <td>{{ $item->course }}</td>
@@ -121,6 +124,15 @@
             @endif
             //for datatable and filter
             var oTable = $('#table_id').DataTable({
+                "columnDefs": [{
+                        "width": "10%",
+                        "targets": [2, 3, 4]
+                    },
+                    {
+                        "width": "15%",
+                        "targets": [1]
+                    }
+                ],
                 "ordering": false,
                 fixedHeader: {
                     header: false,
@@ -139,7 +151,7 @@
                     this.api().columns().every(function() {
                         var column = this;
                         var select = $(
-                                '<select class="form-select form-select-sm"><option value=""></option></select>'
+                                '<select style="padding-left: .2rem" class="form-select form-select-sm"><option value=""></option></select>'
                             )
                             .appendTo($(column.header()).find('span').empty())
                             .on({

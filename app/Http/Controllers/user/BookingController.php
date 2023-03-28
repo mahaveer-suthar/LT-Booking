@@ -59,10 +59,13 @@ class BookingController extends Controller
         if ($validated->fails()) {
             return redirect()->back()->withErrors($validated);
         }
-        $expire_date=Timetablesource::where('is_active',"1")->first()->end_date;
+
+        $expire_date=Timetablesource::where('is_active',"1")->first();
         $today=Carbon::today()->format('Y-m-d');
-        if ($expire_date <= $today) {
-            return view('students.timetableExpire');
+        if (isset($expire_date)) {
+            if ($expire_date->end_date <= $today) {
+                return view('students.timetableExpire');
+            }
         }
         $input_day= Carbon::createFromFormat('d/m/Y', $request->date)->format('l');
         $data=Booking::where('date','=',date('Y-m-d',strtotime($request->date)))->Where('timeslots_id','=',$request->time)->where('status','!=','reject')->get()->groupBy('lt_id')->toArray();

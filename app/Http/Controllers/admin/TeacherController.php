@@ -3,17 +3,13 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Imports\TeacherImport;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\NotifyMail;
+use App\Imports\TeacherImport;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ProfessorController extends Controller
+class TeacherController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,8 +18,8 @@ class ProfessorController extends Controller
      */
     public function index()
     {
-        $users = User::where('role','!=',1)->orderBy('id', 'desc')->get();
-        return view('admin.professors', compact('users'));
+        $users=User::where('role',2)->get();
+        return view('admin.teachers',compact('users'));
     }
 
     /**
@@ -44,27 +40,23 @@ class ProfessorController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = Validator::make(
-            $request->all(),
-            [
-                'email' => ['required', 'email', 'max:255', 'unique:users'],
-            ]
-        );
-        //Check the validation
-        if ($validated->fails()) {
-            return redirect()->back()->with('error', 'Ohh! This email is exist');
+        if ($request->teacher_file) {
+            $validated = Validator::make(
+                $request->all(),
+                [
+                    'teacher_file' => ['required', 'mimes:xls,xlsx,csv'],
+                ]
+            );
+            //Check the validation
+            if ($validated->fails()) {
+                return redirect()->back()->with('error', 'Ohh! your file extension not valid');
+            }
+            $import = Excel::import(new TeacherImport, $request->file('teacher_file'));
+            if ($import) {
+                return back()->with(['success' => 'Teachers imported successfully']);
+            }
+            return redirect()->back()->with(['worng'=>'somthing worng']);
         }
-        $data=$request->all();
-        $user=User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['phone']),
-            'contact_no'=>$data['phone']
-        ]);
-        if ($user) {
-            return Redirect::back()->with(['success' => 'Teacher added successfully']);
-        }
-        return redirect()->back()->with(['worng'=>'somthing worng']);
     }
 
     /**
@@ -109,7 +101,6 @@ class ProfessorController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
-        return response()->json(['status'=>200]);
+        //
     }
 }

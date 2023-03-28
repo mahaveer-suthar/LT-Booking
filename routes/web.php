@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\admin\Lt_roomController;
 use App\Http\Controllers\admin\ProfessorController;
+use App\Http\Controllers\admin\RequestController;
+use App\Http\Controllers\admin\StudentController;
+use App\Http\Controllers\admin\TeacherController;
 use App\Http\Controllers\Admin\TimetableController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -41,6 +44,9 @@ Route::group(['prefix' => '/admin','as' => 'admin.', 'middleware'=>['is_admin','
     Route::get('/timetable',[TimetableController::class,'index'])->name('timetable');
     Route::post('/timetable',[TimetableController::class,'upload'])->name('upload');
     Route::delete('/reset/{id}',[TimetableController::class,'reset'])->name('reset');
+    Route::resource('/student',StudentController::class);
+    Route::resource('/request',RequestController::class);
+    Route::resource('/teachers',TeacherController::class);
   });
 
 

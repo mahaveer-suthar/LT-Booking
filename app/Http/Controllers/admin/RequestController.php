@@ -3,17 +3,10 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Imports\TeacherImport;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\NotifyMail;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Models\User;
 
-class ProfessorController extends Controller
+class RequestController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,8 +15,8 @@ class ProfessorController extends Controller
      */
     public function index()
     {
-        $users = User::where('role','!=',1)->orderBy('id', 'desc')->get();
-        return view('admin.professors', compact('users'));
+        $users=User::where('role',4)->get();
+        return view('admin.requests',compact('users'));
     }
 
     /**
@@ -44,27 +37,7 @@ class ProfessorController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = Validator::make(
-            $request->all(),
-            [
-                'email' => ['required', 'email', 'max:255', 'unique:users'],
-            ]
-        );
-        //Check the validation
-        if ($validated->fails()) {
-            return redirect()->back()->with('error', 'Ohh! This email is exist');
-        }
-        $data=$request->all();
-        $user=User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['phone']),
-            'contact_no'=>$data['phone']
-        ]);
-        if ($user) {
-            return Redirect::back()->with(['success' => 'Teacher added successfully']);
-        }
-        return redirect()->back()->with(['worng'=>'somthing worng']);
+        //
     }
 
     /**
@@ -86,7 +59,7 @@ class ProfessorController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -98,7 +71,29 @@ class ProfessorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user=User::find($request->id);
+        if ($request->status == 3) {
+            $update = User::find($request->id)->update(['status' => 'approved','role'=>3]);
+            if ($update) {
+                // dispatch(new EmailJob($user,$booking,'Approval'));
+                return response()->json(['status' => 200, 'msg' => 'Approve done']);
+            }
+        }
+        if ($request->status == 2) {
+            $update = User::find($request->id)->update(['status' => 'approved','role'=>2]);
+            if ($update) {
+                // dispatch(new EmailJob($user,$booking,'Approval'));
+                return response()->json(['status' => 200, 'msg' => 'Approve done']);
+            }
+        }
+        if ($request->status==0) {
+            $update = User::find($request->id)->update(['role' => 0,'status' => 'reject']);
+            if ($update) {
+                // dispatch(new EmailJob($user,$booking,'Reject'));
+                User::find($request->id)->delete();
+                return response()->json(['status' => 200, 'msg' => 'Reject done']);
+            }
+        }
     }
 
     /**
@@ -109,7 +104,6 @@ class ProfessorController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
-        return response()->json(['status'=>200]);
+        //
     }
 }

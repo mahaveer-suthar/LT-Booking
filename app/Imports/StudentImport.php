@@ -6,7 +6,7 @@ use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class TeacherImport implements ToModel,WithHeadingRow
+class StudentImport implements ToModel,WithHeadingRow
 {
     /**
     * @param array $row
@@ -20,6 +20,6 @@ class TeacherImport implements ToModel,WithHeadingRow
             'email'=>$row['email'],
             'password'=>$row['password'],
             'contact_no'=>$row['mobile_no']
-        ],['role'=>2]);
+        ],['role'=>3]);
     }
 }
