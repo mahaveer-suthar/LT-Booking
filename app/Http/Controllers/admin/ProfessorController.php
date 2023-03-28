@@ -20,7 +20,7 @@ class ProfessorController extends Controller
      */
     public function index()
     {
-        $users = User::where('is_admin', null)->orderBy('id', 'desc')->get();
+        $users = User::where('role','!=',1)->orderBy('id', 'desc')->get();
         return view('admin.professors', compact('users'));
     }
 
@@ -42,6 +42,7 @@ class ProfessorController extends Controller
      */
     public function store(Request $request)
     {
+
         $validated = Validator::make(
             $request->all(),
             [
@@ -51,6 +52,9 @@ class ProfessorController extends Controller
         //Check the validation
         if ($validated->fails()) {
             return redirect()->back()->with('error', 'your message,here');
+        }
+        if ($request->teacher_file) {
+            return "if has file";
         }
         $data=$request->all();
         $user=User::create([

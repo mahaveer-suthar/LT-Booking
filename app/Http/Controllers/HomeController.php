@@ -24,9 +24,17 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function userHome()
     {
-        return view('users.home');
+        return view('users.index');
+    }
+    public function teacherHome()
+    {
+        return view('students.home');
+    }
+    public function studentHome()
+    {
+        return view('students.home');
     }
     /**
      * Show the application dashboard.
@@ -38,6 +46,12 @@ class HomeController extends Controller
         $bookings = Booking::orderBy('id', 'desc')->get();
         return view('admin.booking_request', compact('bookings'));
     }
+
+
+
+
+
+    // use for approve||reject  req
     public function changeStatus(Request $request)
     {
         $booking=Booking::find($request->id);

@@ -19,7 +19,7 @@ class AdminSeeder extends Seeder
             'name'=>'Admin',
             'email'=>'lnm.ltbooking@gmail.com',
             'password'=>Hash::make('admin@123'),
-            'is_admin'=>1
+            'role'=>1
         ]);
     }
 }

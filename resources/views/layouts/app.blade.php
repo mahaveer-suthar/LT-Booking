@@ -70,8 +70,9 @@
                         <a href="{{ route('user.home') }}" class="fxt-logo"><img src="{{asset('img/logo-9.svg')}}" alt="Logo"></a>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <button type="button" onclick="location.href='{{route('user.booking.index')}}'" class="fxt-btn">Book an LT</button>
-                        <button type="button" onclick="location.href='{{route('user.booking.show',Auth::user()->id)}}'" class="fxt-btn px-3" style="background-color: #3221d2;">Booking Status</button>
+                        
+                        <button type="button" onclick="location.href='@if (auth()->user()->role==3){{route('student.booking.index')}}@else {{route('teacher.booking.index')}}  @endif'" class="fxt-btn">Book an LT</button>
+                        <button type="button" onclick="location.href='@if (auth()->user()->role==3){{route('student.booking.show',Auth::user()->id)}} @else {{route('teacher.booking.show',Auth::user()->id)}} @endif '" class="fxt-btn px-3" style="background-color: #3221d2;">Booking Status</button>
                     </div>
                 </div>
                 <div class="col-lg-8">

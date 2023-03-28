@@ -111,7 +111,7 @@
                                 <p>Already have an account?<a href="{{ route('login') }}"
                                         class="switcher-text2 inline-text">Log in</a></p>
 										<a href="{{ route('google.login') }}" class="login-with-google-btn">
-											Sign in with Google
+											Log in with Google
 										</a>
                             </div>
                         </div>

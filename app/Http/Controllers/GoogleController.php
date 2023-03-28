@@ -30,7 +30,8 @@ class GoogleController extends Controller
                 ],[
                     'name' => $user->getName(),
                     'email' => $user->getEmail(),
-                    'password' => Hash::make($user->getName().'@'.$user->getId())
+                    'password' => Hash::make($user->getName().'@'.$user->getId()),
+                    'role'=>4
                 ]);
                 $saveUser->notify(new WelcomeEmailNotification($saveUser));
             }else{
@@ -43,7 +44,23 @@ class GoogleController extends Controller
 
             Auth::loginUsingId($saveUser->id);
 
-            return redirect()->route('user.home');
+            //login after sign in
+            switch (Auth::user()->role) {
+                case 1:
+                return redirect()->route('admin.home');
+                    break;
+                case 2:
+                    return redirect()->route('teacher.home');
+                    break;
+                case 3:
+                    return redirect()-> route('student.home');
+                    break;
+                case 4:
+                    return redirect()-> route('user.home');
+                    break;
+                default:
+                return redirect()->route('login'); //if user doesn't have any role
+            }
         } catch (\Throwable $th) {
             throw $th;
         }

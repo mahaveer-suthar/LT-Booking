@@ -30,9 +30,8 @@ Route::prefix('google')->name('google.')->group( function(){
   Route::get('login', [GoogleController::class, 'loginWithGoogle'])->name('login');
   Route::any('callback', [GoogleController::class, 'callbackFromGoogle'])->name('callback');
 });
-Auth::routes();
 
-
+//Admin Routes Role 1
 Route::group(['prefix' => '/admin','as' => 'admin.', 'middleware'=>['is_admin','auth']], function () {
     Route::get('/home', [HomeController::class, 'adminHome'])->name('home');
     Route::post('/change_status', [HomeController::class, 'changeStatus'])->name('changeRequestStatus');
@@ -45,8 +44,25 @@ Route::group(['prefix' => '/admin','as' => 'admin.', 'middleware'=>['is_admin','
   });
 
 
-Route::group(['prefix' => '/user','as' => 'user.', 'middleware'=>['auth','is_user']], function () {
-      Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Teacher Routes Role 2
+Route::group(['prefix'=>'/teacher', 'as'=>'teacher.','middleware'=>['auth','is_teacher']], function () {
+  Route::get('/home', [HomeController::class, 'teacherHome'])->name('home');
+  Route::resource('/booking', BookingController::class);
+  Route::post('/applyRequest',[BookingController::class,'applyRequest'])->name('applyRequest');
+});
+
+//Student bodies Routes Role 3
+Route::group(['prefix'=>'/student', 'as'=>'student.','middleware'=>['auth','is_student']], function () {
+      Route::get('/home', [HomeController::class, 'studentHome'])->name('home');
       Route::resource('/booking', BookingController::class);
       Route::post('/applyRequest',[BookingController::class,'applyRequest'])->name('applyRequest');
+});
+
+//User Routes Role 4
+Route::group(['prefix' => '/user','as' => 'user.', 'middleware'=>['auth','is_user']], function () {
+  Route::get('/home', [HomeController::class, 'userHome'])->name('home');
   });
+
+Auth::routes();
+
+

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class IsAdmin
 {
@@ -16,11 +17,24 @@ class IsAdmin
      */
     public function handle($request, Closure $next)
     {
-        if(auth()->user()->is_admin == 1){
-            return $next($request);
+       if (!Auth::check()) {
+            return redirect()->route('login');
         }
-    
-        return redirect('home');
+        if (Auth::user()->role == 2) {
+            return redirect()->route('teacher.home');
+        }
+
+        if (Auth::user()->role == 3) {
+            return redirect()->route('student.home');
+        }
+        if (Auth::user()->role == 4) {
+            return redirect()->route('user.home');
+        }
+        if (Auth::user()->role == 1) {
+            return $next($request);
+        } else {
+            return back(); // Redirecting same dashboard when user try to access another dashboard by typing in the URL
+        }
     }
 }
 

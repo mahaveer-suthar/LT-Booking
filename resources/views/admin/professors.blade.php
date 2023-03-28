@@ -1,10 +1,14 @@
 @extends('layouts-admin.app')
 @section('content')
     <div class="col-lg-12">
-        {{-- <h4>Add Professor</h4>
+        <h4>Add Professor</h4>
         <div class="card">
             <div class="row p-2 m-0">
-                <form class="needs-validation" novalidate action="professor" method="POST">
+
+                <div class="file-upload-wrapper">
+                    <input type="file" id="input-file-now" class="file-upload" />
+                  </div>
+                {{-- <form class="needs-validation" novalidate action="professor" method="POST">
                     @csrf
                     <div class="form-row">
                         <div class="col-md-4 mb-3">
@@ -43,9 +47,9 @@
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-primary" type="submit">Sumbit</button>
                     </div>
-                </form>
+                </form> --}}
             </div>
-        </div> --}}
+        </div>
         <h4>Users</h4>
         <div class="card p-2">
             <div class="table-responsive">
@@ -133,6 +137,7 @@
             })
         }
         $(document).ready(function() {
+            $('.file-upload').file_upload();
             toastr.options.timeOut = 5000;
             @if (Session::has('error'))
                 toastr.error('Ohh! Please use another E-mail');

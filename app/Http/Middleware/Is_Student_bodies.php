@@ -5,7 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-class IsUser
+
+class Is_Student_bodies
 {
     /**
      * Handle an incoming request.
@@ -22,12 +23,16 @@ class IsUser
         if (Auth::user()->role == 2) {
             return redirect()->route('teacher.home');
         }
-        if (Auth::user()->role == 4) {
+
+        if (Auth::user()->role == 3) {
             return $next($request);
         }
-        if (Auth::user()->role == 3) {
-            return redirect()->route('student.home');
+
+        if (Auth::user()->role == 4) {
+            return redirect()->route('user.home');
         }
+
+       
         if (Auth::user()->role == 1) {
             return redirect()->route('admin.home');
         } else {

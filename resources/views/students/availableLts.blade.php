@@ -43,7 +43,7 @@
                 confirmButtonText: 'Send Request'
             }).then((result) => {
                 if (result.value) {
-                    $.ajax('{{route('user.applyRequest')}}', {
+                    $.ajax('@if (auth()->user()->role==3){{route('student.applyRequest')}} @else {{route('teacher.applyRequest')}} @endif ', {
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
@@ -58,7 +58,7 @@
                             console.log(data);
                             if (data.status == 200) {
                                 Swal.fire({
-                                    title: 'Applied successfully',
+                                    title: data.msg,
                                     icon: 'success',
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: 'Ok'

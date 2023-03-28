@@ -8,6 +8,7 @@ use App\Models\Booking;
 use App\Models\Lt_rooms;
 use App\Models\Timeslots;
 use App\Models\Timetable;
+use App\Models\Timetablesource;
 use App\Models\User;
 use App\Notifications\Admininfo;
 use Carbon\Carbon;
@@ -26,7 +27,7 @@ class BookingController extends Controller
     {
         $time_0=Timeslots::where('is_active',null)->orWhere('is_active',"0")->get();
         $time_1=Timeslots::where('is_active',null)->orWhere('is_active',"1")->get();
-        return view('users.create_booking',compact('time_0','time_1'));
+        return view('students.create_booking',compact('time_0','time_1'));
     }
 
     /**
@@ -58,9 +59,12 @@ class BookingController extends Controller
         if ($validated->fails()) {
             return redirect()->back()->withErrors($validated);
         }
-        // set day in number[0=sun,1=mon]
-        $input_day= Carbon::create($request->date)->dayOfWeek;
-
+        $expire_date=Timetablesource::where('is_active',"1")->first()->end_date;
+        $today=Carbon::today()->format('Y-m-d');
+        if ($expire_date <= $today) {
+            return view('students.timetableExpire');
+        }
+        $input_day= Carbon::createFromFormat('d/m/Y', $request->date)->format('l');
         $data=Booking::where('date','=',date('Y-m-d',strtotime($request->date)))->Where('timeslots_id','=',$request->time)->where('status','!=','reject')->get()->groupBy('lt_id')->toArray();
         // get time table data
         $timetable=Timetable::where('day',$input_day)->where('timeslots_id',$request->time)->get()->groupBy('lt_id')->toArray();
@@ -78,7 +82,7 @@ class BookingController extends Controller
             return view('users.not_available');
         }
         $user_data=$request;
-        return view('users.availableLts',compact('data','user_data'));
+        return view('students.availableLts',compact('data','user_data'));
     }
 
     /**
@@ -90,7 +94,7 @@ class BookingController extends Controller
     public function show($id)
     {
         $data=Booking::where('user_id',$id)->get();
-        return view('users.booking_status',compact('data'));
+        return view('students.booking_status',compact('data'));
     }
 
     /**
@@ -128,7 +132,15 @@ class BookingController extends Controller
     }
     public function applyRequest(Request $request)
     {
-        // $book='';
+        if (auth()->user()->role==2) {
+            $book=Booking::create([
+                'date'=>date('Y-m-d',strtotime($request->date)),
+                'user_id'=>Auth::user()->id,
+                'timeslots_id'=>$request->timeslots_id,
+                'lt_id'=>$request->lt_id,
+                'status' => 'approved'
+            ]);
+        }else{
         $book=Booking::create([
             'date'=>date('Y-m-d',strtotime($request->date)),
             'user_id'=>Auth::user()->id,
@@ -136,11 +148,12 @@ class BookingController extends Controller
             'lt_id'=>$request->lt_id
         ]);
         if ($book) {
-            $admin=User::find(1);
+            $admin=User::first();
             $admin->notify(new Admininfo($book));
-            return response()->json(['status'=>200,'msg'=>'Booked successfully']);
+            return response()->json(['status'=>200,'msg'=>'Request sent successfully']);
         }
-        // return response()
+    }
+    return response()->json(['status'=>200,'msg'=>'Booking successfully done']);
     }
 
 }
