@@ -15,7 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-
+use App\Jobs\EmailJob;
 class BookingController extends Controller
 {
     /**
@@ -143,6 +143,11 @@ class BookingController extends Controller
                 'lt_id'=>$request->lt_id,
                 'status' => 'approved'
             ]);
+            if ($book) {
+                $user=auth()->user();
+
+                dispatch(new EmailJob($user, $book, 'Approval'));
+            }
         }else{
         $book=Booking::create([
             'date'=>date('Y-m-d',strtotime($request->date)),

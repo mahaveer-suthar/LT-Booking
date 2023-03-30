@@ -21,5 +21,11 @@ class AdminSeeder extends Seeder
             'password'=>Hash::make('admin@123'),
             'role'=>1
         ]);
+        User::create([
+            'name'=>'Dean',
+            'email'=>'dean.ltbooking@gmail.com',
+            'password'=>Hash::make('dean@123'),
+            'role'=>5
+        ]);
     }
 }

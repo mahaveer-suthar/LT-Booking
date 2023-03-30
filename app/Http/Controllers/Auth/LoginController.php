@@ -47,6 +47,9 @@ class LoginController extends Controller
             case 4:
                     $this->redirectTo = route('user.home');
                 return $this->redirectTo;
+            case 5:
+                    $this->redirectTo = route('dean.home');
+                return $this->redirectTo;
                 break;
             default:
                 $this->redirectTo = '/dashboard'; //if user doesn't have any role

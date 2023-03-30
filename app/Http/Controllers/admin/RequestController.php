@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\RequestApprovelJob;
+use App\Mail\NotifyMail;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Notifications\RequestApprovel;
+use Illuminate\Support\Facades\Mail;
 
 class RequestController extends Controller
 {
@@ -15,6 +19,7 @@ class RequestController extends Controller
      */
     public function index()
     {
+        
         $users=User::where('role',4)->get();
         return view('admin.requests',compact('users'));
     }
@@ -75,21 +80,21 @@ class RequestController extends Controller
         if ($request->status == 3) {
             $update = User::find($request->id)->update(['status' => 'approved','role'=>3]);
             if ($update) {
-                // dispatch(new EmailJob($user,$booking,'Approval'));
+                dispatch(new RequestApprovelJob($user,'Approved for Student'));;
                 return response()->json(['status' => 200, 'msg' => 'Approve done']);
             }
         }
         if ($request->status == 2) {
             $update = User::find($request->id)->update(['status' => 'approved','role'=>2]);
             if ($update) {
-                // dispatch(new EmailJob($user,$booking,'Approval'));
+                dispatch(new RequestApprovelJob(User::find($request->id),'Approved for teacher'));
                 return response()->json(['status' => 200, 'msg' => 'Approve done']);
             }
         }
         if ($request->status==0) {
             $update = User::find($request->id)->update(['role' => 0,'status' => 'reject']);
             if ($update) {
-                // dispatch(new EmailJob($user,$booking,'Reject'));
+                // dispatch(new RequestApprovelJob(User::find($request->id),'Rejected by admin'));
                 User::find($request->id)->delete();
                 return response()->json(['status' => 200, 'msg' => 'Reject done']);
             }

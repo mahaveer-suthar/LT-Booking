@@ -44,7 +44,7 @@ class StudentController extends Controller
             $validated = Validator::make(
                 $request->all(),
                 [
-                    'student_file' => ['required', 'mimes:xls,xlsx,csv'],
+                    'student_file' => ['required', 'mimes:xls,xlsx,csv']
                 ]
             );
             //Check the validation

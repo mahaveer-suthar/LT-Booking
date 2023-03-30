@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('status',['pending','approved','reject'])->nullable();
             $table->rememberToken();
+            $table->timestamp('pw_change')->nullable();
             $table->timestamps();
         });
     }

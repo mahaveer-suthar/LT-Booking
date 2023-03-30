@@ -50,6 +50,9 @@
                 </a>
 
                 <ul class="sidebar-nav">
+                    @if (auth()->user()->role == 1)
+                        
+                    
                     <li class="sidebar-item">
                         <a style="text-decoration:none" class="sidebar-link" href="{{ route('admin.home') }}">
                             <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Booking
@@ -87,6 +90,15 @@
                             <i class="align-middle" data-feather="git-pull-request"></i> <span class="align-middle">New Requests </span>@if (app\Models\User::where('role',4)->get()->count())<span class=" align-middle badge badge-success">{{app\Models\User::where('role',4)->get()->count()}} @endif</span>
                         </a>
                     </li>
+                    @endif
+                    @if (auth()->user()->role==5)
+                    <li class="sidebar-item">
+                        <a style="text-decoration:none" class="sidebar-link" href="{{ route('dean.home') }}">
+                            <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Booking
+                                Request</span>
+                        </a>
+                    </li>
+                    @endif
 
                 </ul>
             </div>
@@ -260,9 +272,9 @@
                                     alt="admin" /> <span class="text-dark">{{ Auth::guard()->user()->name }}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="{{ route('admin.home') }}"><i class="align-middle me-1"
-                                        data-feather="user"></i> Profile</a>
-                                <div class="dropdown-divider"></div>
+                                {{-- <a class="dropdown-item" href="{{ route('admin.home') }}"><i class="align-middle me-1"
+                                        data-feather="user"></i> Profile</a> --}}
+                                {{-- <div class="dropdown-divider"></div> --}}
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                     style="display: none;">
                                     @csrf

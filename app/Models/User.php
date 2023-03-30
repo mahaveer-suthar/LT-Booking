@@ -24,7 +24,8 @@ class User extends Authenticatable
         'role',
         'contact_no',
         'google_id',
-        'status'
+        'status',
+        'pw_change'
     ];
 
     /**

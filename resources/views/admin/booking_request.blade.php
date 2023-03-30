@@ -70,9 +70,7 @@
         <script>
             $(document).ready(function() {
                 $('#table_id').DataTable({
-                    order: [
-                        [0, 'desc']
-                    ],
+                    "ordering": false,
                     'columnDefs': [{
                         "targets": [0, 1, 2, 3, 4], // your case first column
                         "className": "text-center",
@@ -91,7 +89,7 @@
                         }).then((result) => {
                                 if (result.value) {
                                     $("#spinner-div").show();
-                                    $.ajax('{{ route('admin.changeRequestStatus') }}', {
+                                    $.ajax('@if (auth()->user()->role==5){{route('dean.changeRequestStatus')}} @else {{ route('admin.changeRequestStatus') }} @endif', {
                                             headers: {
                                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                                             },

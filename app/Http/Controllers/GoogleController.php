@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\WelcomeJob;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use App\Notifications\WelcomeEmailNotification;
+use Carbon\Carbon;
 
 class GoogleController extends Controller
 {
@@ -33,10 +35,11 @@ class GoogleController extends Controller
                     'password' => Hash::make($user->getName().'@'.$user->getId()),
                     'role'=>4
                 ]);
-                $saveUser->notify(new WelcomeEmailNotification($saveUser));
+                dispatch(new WelcomeJob($saveUser));
             }else{
                 $saveUser = User::where('email',  $user->getEmail())->update([
                     'google_id' => $user->getId(),
+                    'pw_change' => Carbon::now()
                 ]);
                 $saveUser = User::where('email', $user->getEmail())->first();
             }

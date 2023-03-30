@@ -55,6 +55,7 @@ Route::group(['prefix'=>'/teacher', 'as'=>'teacher.','middleware'=>['auth','is_t
   Route::get('/home', [HomeController::class, 'teacherHome'])->name('home');
   Route::resource('/booking', BookingController::class);
   Route::post('/applyRequest',[BookingController::class,'applyRequest'])->name('applyRequest');
+  Route::post('pw_change',[HomeController::class,'pw_change'])->name('pw_change');
 });
 
 //Student bodies Routes Role 3
@@ -62,11 +63,16 @@ Route::group(['prefix'=>'/student', 'as'=>'student.','middleware'=>['auth','is_s
       Route::get('/home', [HomeController::class, 'studentHome'])->name('home');
       Route::resource('/booking', BookingController::class);
       Route::post('/applyRequest',[BookingController::class,'applyRequest'])->name('applyRequest');
+      Route::post('pw_change',[HomeController::class,'pw_change'])->name('pw_change');
 });
 
 //User Routes Role 4
 Route::group(['prefix' => '/user','as' => 'user.', 'middleware'=>['auth','is_user']], function () {
   Route::get('/home', [HomeController::class, 'userHome'])->name('home');
+  });
+Route::group(['prefix' => '/dean','as' => 'dean.', 'middleware'=>['auth']], function () {
+  Route::get('/home', [HomeController::class, 'adminHome'])->name('home');
+  Route::post('/change_status', [HomeController::class, 'changeStatus'])->name('changeRequestStatus');
   });
 
 Auth::routes();
