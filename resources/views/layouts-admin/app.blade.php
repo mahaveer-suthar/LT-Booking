@@ -59,12 +59,6 @@
                                 Request</span>
                         </a>
                     </li>
-                    <li class="sidebar-item">
-                        <a style="text-decoration:none" class="sidebar-link"
-                            href="{{ route('admin.professor.index') }}">
-                            <i class="align-middle" data-feather="user"></i> <span class="align-middle">Users</span>
-                        </a>
-                    </li>
                     {{-- <li class="sidebar-item">
                         <a style="text-decoration:none" class="sidebar-link" href="{{route('admin.lt_room.index')}}">
                             <i class="align-middle" data-feather="grid"></i> <span class="align-middle">LT Rooms</span>

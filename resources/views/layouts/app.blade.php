@@ -22,13 +22,13 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-    	{{-- toast message --}}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    {{-- toast message --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-        <link rel="stylesheet" type="text/css"
-            href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
 
@@ -39,18 +39,40 @@
 </head>
 
 <body>
+    <style>
+    .myButton {
+    background: linear-gradient(to bottom, #7892c2 5%, #476e9e 100%);
+    background-color: #7892c2;
+    border-radius: 4px;
+    border: 2px solid #4e6096;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 13px;
+    padding: 5px 10px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #283966;
+}
+    .myButton:hover {
+        background:linear-gradient(to bottom, #476e9e 5%, #7892c2 100%) !important;
+        background-color:#476e9e;
+        color: white;
+        text-decoration: none;
+    }
+    .myButton:active {
+        position:relative;
+        top:1px;
+    }</style>
     <nav class="navbar navbar-light bg-light justify-content-end">
-        <form id="logout-form" action="{{ route('logout') }}" method="POST"
-        style="display: none;">
-        @csrf
-    </form>
-    
-    <a class="p-0 "
-        href="{{ route('logout') }}"onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
-            class="fa fa-fw fa-test" data-feather="log-out"></i>Log out</a>
-      </nav>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+        <a class="myButton"
+            href="{{ route('logout') }}"onclick="event.preventDefault(); alert('Are you sure'); document.getElementById('logout-form').submit();">Log out</a>
+    </nav>
 
-      
+
     <!--[if lt IE 8]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -61,18 +83,22 @@
             <div class='line3'></div>
         </div>
     </div>
-    <section class="fxt-template-animation fxt-template-layout9" data-bg-image="{{asset('img/figure/bg9-l.jpg')}}">
-        
+    <section class="fxt-template-animation fxt-template-layout9" data-bg-image="{{ asset('img/figure/bg9-l.jpg') }}">
+
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-4">
                     <div class="fxt-header">
-                        <a href="{{ route('user.home') }}" class="fxt-logo"><img src="{{asset('img/logo-9.svg')}}" alt="Logo"></a>
+                        <a href="{{ route('user.home') }}" class="fxt-logo"><img src="{{ asset('img/logo-9.svg') }}"
+                                alt="Logo"></a>
                     </div>
                     <div class="d-flex justify-content-between">
-                        
-                        <button type="button" onclick="location.href='@if (auth()->user()->role==3){{route('student.booking.index')}}@else {{route('teacher.booking.index')}}  @endif'" class="fxt-btn">Book an LT</button>
-                        <button type="button" onclick="location.href='@if (auth()->user()->role==3){{route('student.booking.show',Auth::user()->id)}} @else {{route('teacher.booking.show',Auth::user()->id)}} @endif '" class="fxt-btn px-3" style="background-color: #3221d2;">Booking Status</button>
+                        <button type="button"
+                            onclick="location.href='@if (auth()->user()->role == 3) {{ route('student.booking.index') }}@else {{ route('teacher.booking.index') }} @endif'"
+                            class="fxt-btn">Book an LT</button>
+                        <button type="button"
+                            onclick="location.href='@if (auth()->user()->role == 3) {{ route('student.booking.show', Auth::user()->id) }} @else {{ route('teacher.booking.show', Auth::user()->id) }} @endif '"
+                            class="fxt-btn px-3" style="background-color: #3221d2;">Booking Status</button>
                     </div>
                 </div>
                 <div class="col-lg-8">
