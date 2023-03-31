@@ -56,7 +56,7 @@
                     <li class="sidebar-item">
                         <a style="text-decoration:none" class="sidebar-link" href="{{ route('admin.home') }}">
                             <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Booking
-                                Request</span>
+                                Request</span>@if (App\Models\Booking::where('status','pending')->get()->count())<span class="ml-2 align-middle badge badge-success">{{App\Models\Booking::where('status','pending')->get()->count()}} @endif </span>
                         </a>
                     </li>
                     {{-- <li class="sidebar-item">
@@ -81,7 +81,7 @@
                     </li>
                     <li class="sidebar-item">
                         <a style="text-decoration:none" class="sidebar-link" href="{{route('admin.request.index')}}">
-                            <i class="align-middle" data-feather="git-pull-request"></i> <span class="align-middle">New Requests </span>@if (app\Models\User::where('role',4)->get()->count())<span class=" align-middle badge badge-success">{{app\Models\User::where('role',4)->get()->count()}} @endif</span>
+                            <i class="align-middle" data-feather="git-pull-request"></i> <span class="align-middle">New Requests </span>@if (app\Models\User::where('role',4)->get()->count())<span class="ml-2 align-middle badge badge-success">{{app\Models\User::where('role',4)->get()->count()}} @endif</span>
                         </a>
                     </li>
                     @endif
@@ -89,7 +89,7 @@
                     <li class="sidebar-item">
                         <a style="text-decoration:none" class="sidebar-link" href="{{ route('dean.home') }}">
                             <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Booking
-                                Request</span>
+                                Request</span>@if (App\Models\Booking::where('status','pending')->get()->count())<span class="ml-2 align-middle badge badge-success">{{App\Models\Booking::where('status','pending')->get()->count()}} @endif </span>
                         </a>
                     </li>
                     @endif

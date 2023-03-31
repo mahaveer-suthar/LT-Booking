@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>LT-Booking Password Reset</title>
+    <title>LT-Booking</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -43,31 +43,49 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="fxt-content">
-                        <h2>Recover your password</h2>
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
+                        <h2>Create new passsword</h2>
                         <div class="fxt-form">
-                            <form method="POST" action="{{ route('password.email') }}">
+                            @if (Session::has('error'))
+                                {{Session::get('error')}}
+                            @endif
+                            <form method="POST" action="{{ route('password.update') }}">
 								@csrf
+                                <input type="hidden" name="token" value="{{ $token }}">
                                 <div class="form-group">
-                                    <div class="fxt-transformY-50 fxt-transition-delay-1">
-                                        <input type="email" id="email"
-                                            class="form-control @error('email') is-invalid @enderror" name="email"
-                                            value="{{ old('email') }}" placeholder="E-mail" required
-                                            autocomplete="email" autofocus>
-                                        @error('email')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>This email is not registerd</strong>
-                                            </span>
-                                        @enderror
+									<div class="fxt-transformY-50 fxt-transition-delay-1">
+										<input type="email" id="email" class="form-control  @error('email') is-invalid @enderror" name="email" placeholder="Email" value="{{ old('email') }}" required autocomplete="email" autofocus >
+									</div>
+									@error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+								</div>
+                                <div class="form-group">
+                                    <div class="fxt-transformY-50 fxt-transition-delay-3">
+                                        <input id="password" type="password"
+                                            class=" toggle_pw form-control @error('password') is-invalid @enderror "
+                                            name="password" placeholder="New Password" required
+                                            autocomplete="current-password">
+                                            @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                                        {{-- <i toggle=".toggle_pw" class="fa fa-fw fa-eye toggle-password field-icon"></i> --}}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="fxt-transformY-50 fxt-transition-delay-3">
+                                        <input id="password-confirm" type="password"
+                                            class=" toggle_pw form-control"name="password_confirmation" required
+                                            autocomplete="new-password" placeholder="Confirm Password">
+                                        <i toggle=".toggle_pw" class="fa fa-fw fa-eye toggle-password field-icon"></i>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-4">
-                                        <button type="submit" class="fxt-btn-fill">Send Me Email</button>
+                                        <button type="submit" class="fxt-btn-fill">Update</button>
                                     </div>
                                 </div>
                             </form>

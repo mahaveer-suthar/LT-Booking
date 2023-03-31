@@ -6,7 +6,7 @@
             <form class="needs-validation" novalidate action="{{ route('admin.upload') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
-                <div class="form-row mb-2">
+                <div class="form-group files">
                     <label for="formFileMultiple" class="form-label">Upload File</label>
                     <input class="form-control" type="file" id="formFileMultiple" multiple name="excel_file" />
                 </div>
@@ -92,10 +92,7 @@
                         @foreach ($data->timetable as $item)
                             <tr>
                                 <td>{{ $item->day }}</td>
-                                <td>
-                                    {{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->start_time)) }}
-                                    To
-                                    {{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->end_time)) }}
+                                <td>{{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->start_time)) }}To{{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->end_time)) }}
                                 </td>
                                 <td>{{ App\Models\Lt_rooms::find($item->lt_id)->room_name }}</td>
                                 <td>{{ $item->course }}</td>

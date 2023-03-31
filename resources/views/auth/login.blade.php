@@ -50,9 +50,9 @@
 									<div class="fxt-transformY-50 fxt-transition-delay-1">
 										<input type="email" id="email" class="form-control  @error('email') is-invalid @enderror" name="email" placeholder="Email" value="{{ old('email') }}" required autocomplete="email" autofocus >
 									</div>
-									@error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+								@error('email')
+                                    <span style="display:inline" class="invalid-feedback" role="alert">
+                                        <strong>Invalid credentials </strong>
                                     </span>
                                 @enderror
 								</div>
