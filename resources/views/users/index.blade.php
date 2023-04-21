@@ -107,9 +107,10 @@
     <div class="wrapper-1">
         <div class="wrapper-2">
             <h1>Thank you !</h1>
-            <p>Thanks for register in LT Booking. We will review your applicataion</p>
-            <p>you should receive a confirmation email soon </p>
-            <p>After approvel you can book LT in our system</p>
+            <p>Thanks for registration in LT Booking</p>
+            <p>We will review your applicataion</p>
+            <p>You should receive a confirmation email soon</p>
+            <p>After approval, you can book LT with our system</p>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
@@ -118,8 +119,6 @@
             </button>
         </div>
         <div class="footer-like">
-            <p>We will touch you soon
-            </p>
         </div>
     </div>
 </div>

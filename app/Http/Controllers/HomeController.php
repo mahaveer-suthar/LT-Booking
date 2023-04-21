@@ -74,7 +74,7 @@ class HomeController extends Controller
         if ($validated->fails()) {
             return redirect()->back()->with('error', 'Ohh! Please check your password');
         }
-        $user=User::find(auth()->user()->id)->update(['password'=>Hash::make($request->password111),'pw_change'=>Carbon::now()]);
+        $user=User::find(auth()->user()->id)->update(['password'=>Hash::make($request->password),'pw_change'=>Carbon::now()]);
         if (auth()->user()->role == 2) {
             return redirect()->route('teacher.home');
         }

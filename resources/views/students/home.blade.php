@@ -138,7 +138,7 @@
         <div class="container">
             <div>
                 <h1>Hello {{Auth::user()->name}} 👋</h1>
-                <h2>Welocome in LT Booking </h2>
+                <h2>Welcome in LT Booking </h2>
             </div>
         </div>
     @endsection

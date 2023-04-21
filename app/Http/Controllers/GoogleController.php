@@ -61,6 +61,9 @@ class GoogleController extends Controller
                 case 4:
                     return redirect()-> route('user.home');
                     break;
+                case 5:
+                    return redirect()-> route('dean.home');
+                    break;
                 default:
                 return redirect()->route('login'); //if user doesn't have any role
             }

@@ -2,27 +2,24 @@
 
 namespace App\Notifications;
 
-use App\Http\Controllers\admin\Lt_roomController;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Models\User;
-use App\Models\Lt_rooms;
-use App\Models\Timeslots;
 
-class Admininfo extends Notification implements ShouldQueue
+class AdminNewUserRequest extends Notification
 {
     use Queueable;
-    public $book;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($book)
+    protected $user;
+    public function __construct($user)
     {
-        $this->book=$book;
+        $this->user=$user;
     }
 
     /**
@@ -45,9 +42,8 @@ class Admininfo extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Hello dean you have recived a request by '.User::find($this->book->user_id)->name.' for booking '.Lt_rooms::find($this->book->lt_id)->room_name.' on '.date('g:i A', strtotime(Timeslots::find($this->book->timeslots_id)->start_time)).' To '.date('g:i A', strtotime(Timeslots::find($this->book->timeslots_id)->end_time)))
-                    ->action('Action ', url('/'));
-
+                    ->line('Hello admin you have recived a request by '.$this->user->name .'for signing up for LT booking system ')
+                    ->action('Open App', url('/'));
     }
 
     /**
