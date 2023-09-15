@@ -5,7 +5,7 @@ use App\Http\Controllers\admin\ProfessorController;
 use App\Http\Controllers\admin\RequestController;
 use App\Http\Controllers\admin\StudentController;
 use App\Http\Controllers\admin\TeacherController;
-use App\Http\Controllers\Admin\TimetableController;
+use App\Http\Controllers\admin\TimetableController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\user\BookingController;
