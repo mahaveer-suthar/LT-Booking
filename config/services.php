@@ -32,7 +32,7 @@ return [
     'google' => [
         'client_id' => '783169747600-1vo930vr563t3q86lnq6h4tfutjtclcd.apps.googleusercontent.com', //USE FROM Google DEVELOPER ACCOUNT
         'client_secret' => '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', //USE FROM Google DEVELOPER ACCOUNT
-        'redirect' => 'http://127.0.0.1:8000/google/callback/'
+        'redirect' => 'https://ltbooking.mobilogicx.com/google/callback/'
 ],
 
 ];
