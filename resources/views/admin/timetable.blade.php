@@ -9,7 +9,7 @@
                 <div class="form-group files">
                     <div class="d-flex justify-content-between">
                         <label for="formFileMultiple" class="form-label">Upload File</label>
-                        <a href="{{ route('download.file', ['filename' => 'timetable-sample-file.xlsx']) }}" class="btn btn-success btn-sm mb-2">Smaple file download</a>
+                        <a href="{{ route('download.file', ['filename' => 'timetable-sample-file.xlsx']) }}" class="btn btn-success btn-sm mb-2">Sample file download</a>
                     </div>
                     <input class="form-control" type="file" id="formFileMultiple" multiple name="excel_file" />
                 </div>
@@ -20,7 +20,7 @@
                     </div>
                 @else
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary" type="submit">Sumbit</button>
+                        <button class="btn btn-primary" type="submit">Submit</button>
                     </div>
                 @endif
             </form>
