@@ -29,11 +29,11 @@ use App\Http\Controllers\GoogleController;
 Route::get('/',function(){
     return redirect(route('login'));
 });
-Route::prefix('google')->name('google.')->group( function(){
-  Route::get('login', [GoogleController::class, 'loginWithGoogle'])->name('login');
-  Route::any('callback', [GoogleController::class, 'callbackFromGoogle'])->name('callback');
-});
-
+// Route::prefix('google')->name('google.')->group( function(){
+//   Route::get('login', [GoogleController::class, 'loginWithGoogle'])->name('login');
+//   Route::any('callback', [GoogleController::class, 'callbackFromGoogle'])->name('callback');
+// });
+Route::get('/download/{filename}',[HomeController::class,'downloadFile'])->name('download.file');
 //Admin Routes Role 1
 Route::group(['prefix' => '/admin','as' => 'admin.', 'middleware'=>['is_admin','auth']], function () {
     Route::get('/home', [HomeController::class, 'adminHome'])->name('home');

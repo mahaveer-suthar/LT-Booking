@@ -9,6 +9,8 @@ use App\Jobs\EmailJob;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -101,5 +103,22 @@ class HomeController extends Controller
                 return response()->json(['status' => 200, 'msg' => 'Reject done']);
             }
         }
+    }
+
+
+    public function downloadFile($filename)
+    {
+        // Get the file path from your storage or public directory
+        $filePath = storage_path('app/public/' . $filename); // You can change the path as needed
+
+        // Check if the file exists
+        if (!Storage::exists($filePath)) {
+            abort(404);
+        }
+
+        // You can add additional logic here to control access if needed
+
+        // Generate a response to download the file
+        return new BinaryFileResponse($filePath);
     }
 }

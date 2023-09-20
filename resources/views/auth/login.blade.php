@@ -85,9 +85,9 @@
 						<div class="fxt-footer">
 							<div class="fxt-transformY-50 fxt-transition-delay-5">
 								<p>Don't have an account?<a href="{{route('register')}}" class="switcher-text2 inline-text">Register</a></p>
-								<a href="{{ route('google.login') }}" class="login-with-google-btn">
+								{{-- <a href="{{ route('google.login') }}" class="login-with-google-btn">
 									Log in with Google
-								</a>
+								</a> --}}
 							</div>
 						</div>
 					</div>

@@ -22,6 +22,11 @@
 </head>
 
 <body>
+    <style>
+        .invalid-feedback: {
+            display: block !important;
+        }
+    </style>
     <!--[if lt IE 8]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -61,8 +66,8 @@
                                             autocomplete="email" autofocus>
                                     </div>
                                     @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
+                                        <span class="" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
                                         </span>
                                     @enderror
                                 </div>
@@ -110,9 +115,9 @@
                             <div class="fxt-transformY-50 fxt-transition-delay-6">
                                 <p>Already have an account?<a href="{{ route('login') }}"
                                         class="switcher-text2 inline-text">Log in</a></p>
-										<a href="{{ route('google.login') }}" class="login-with-google-btn">
-											Log in with Google
-										</a>
+                                {{-- <a href="{{ route('google.login') }}" class="login-with-google-btn">
+                                    Log in with Google
+                                </a> --}}
                             </div>
                         </div>
                     </div>

@@ -7,7 +7,10 @@
                 enctype="multipart/form-data">
                 @csrf
                 <div class="form-group files">
-                    <label for="formFileMultiple" class="form-label">Upload File</label>
+                    <div class="d-flex justify-content-between">
+                        <label for="formFileMultiple" class="form-label">Upload File</label>
+                        <a href="{{ route('download.file', ['filename' => 'timetable-sample-file.xlsx']) }}" class="btn btn-success btn-sm mb-2">Smaple file download</a>
+                    </div>
                     <input class="form-control" type="file" id="formFileMultiple" multiple name="excel_file" />
                 </div>
                 @if ($data)
