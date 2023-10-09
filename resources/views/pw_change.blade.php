@@ -20,8 +20,40 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href={{ asset('css/style.css') }}>
 </head>
+<style>
+    .myButton {
+    background: linear-gradient(to bottom, #7892c2 5%, #476e9e 100%);
+    background-color: #7892c2;
+    border-radius: 4px;
+    border: 2px solid #4e6096;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 13px;
+    padding: 5px 10px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #283966;
+}
+    .myButton:hover {
+        background:linear-gradient(to bottom, #476e9e 5%, #7892c2 100%) !important;
+        background-color:#476e9e;
+        color: white;
+        text-decoration: none;
+    }
+    .myButton:active {
+        position:relative;
+        top:1px;
+    }</style>
 
 <body>
+    <nav class="navbar navbar-light bg-light justify-content-end">
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+        <a class="myButton"
+            href="{{ route('logout') }}"onclick="event.preventDefault(); alert('Are you sure'); document.getElementById('logout-form').submit();">Log out</a>
+    </nav>
     <!--[if lt IE 8]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -44,25 +76,31 @@
                 <div class="col-lg-6">
                     <div class="fxt-content">
                         <h2>Create new passsword</h2>
+                        @if (session('errors'))
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach (session('errors')->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="fxt-form">
-                            @if (Session::has('error'))
-                                {{Session::get('error')}}
-                            @endif
-                            <form method="POST" action="@if(auth()->user()->role==3) {{route('student.pw_change')}}  @else{{route('teacher.pw_change')}} @endif">
-								@csrf
+                            <form method="POST" action="{{ route('password.change.post') }}">
+                                @csrf
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-3">
                                         <input id="password" type="password"
                                             class=" toggle_pw form-control @error('password') is-invalid @enderror "
                                             name="password" placeholder="New Password" required
-                                            autocomplete="current-password">
+                                            autocomplete="">
                                         {{-- <i toggle=".toggle_pw" class="fa fa-fw fa-eye toggle-password field-icon"></i> --}}
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-3">
                                         <input id="password-confirm" type="password"
-                                            class=" toggle_pw form-control"name="password-confirm" required
+                                            class=" toggle_pw form-control"name="password_confirmation" required
                                             autocomplete="new-password" placeholder="Confirm Password">
                                         <i toggle=".toggle_pw" class="fa fa-fw fa-eye toggle-password field-icon"></i>
                                     </div>
