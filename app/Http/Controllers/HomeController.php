@@ -175,4 +175,13 @@ class HomeController extends Controller
 
         }
     }
+    public function cancelReq(Request $request)
+    {
+        $booking = Booking::find($request->id);
+        if ($booking) {
+            $booking->update(['status' => 'cancel']);
+        }
+        return response()->json(['status' => 200, 'msg' => 'Cancelled successfully']);
+
+    }
 }

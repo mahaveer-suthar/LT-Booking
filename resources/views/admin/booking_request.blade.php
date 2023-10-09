@@ -48,6 +48,8 @@
 
                                     @case('reject')
                                         <span class="badge badge-pill badge-danger">Rejected</span>
+                                    @case('cancel')
+                                        <span class="badge badge-pill badge-warning">Cancelled</span>
                                     @break
 
                                     @default

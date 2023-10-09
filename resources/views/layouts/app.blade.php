@@ -102,7 +102,7 @@
                     </div>
                 </div>
                 <div class="col-lg-8">
-                    <div class="fxt-content">
+                    <div class="fxt-content p-4">
                         @yield('content')
                     </div>
                 </div>

@@ -87,4 +87,5 @@ Route::group(['middleware' => ['auth']], function () {
   
   Route::get('/password/change', [HomeController::class ,'showChangeForm'])->name('password.change');
   Route::post('/password/change', [HomeController::class ,'change'])->name('password.change.post');
+  Route::post('/cancel-req', [HomeController::class ,'cancelReq'])->name('cancelRequest');
 });

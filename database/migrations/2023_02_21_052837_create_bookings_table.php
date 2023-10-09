@@ -19,7 +19,7 @@ class CreateBookingsTable extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete("cascade");
             $table->foreignId('timeslots_id')->constrained('timeslots')->onDelete("cascade");
             $table->foreignId('lt_id')->nullable()->constrained('lt_rooms')->onDelete("cascade");
-            $table->enum('status',['pending','reject','approved'])->default('pending');
+            $table->enum('status',['pending','reject','approved','cancel'])->default('pending');
             $table->timestamps();
         });
     }

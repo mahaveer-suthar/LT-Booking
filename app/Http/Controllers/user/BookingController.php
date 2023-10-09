@@ -69,7 +69,7 @@ class BookingController extends Controller
             }
         }
         $input_day = Carbon::createFromFormat('m/d/Y', $request->date)->format('l');
-        $data = Booking::where('date', '=', date('Y-m-d', strtotime($request->date)))->Where('timeslots_id', '=', $request->time)->where('status', '!=', 'reject')->get()->groupBy('lt_id')->toArray();
+        $data = Booking::where('date', '=', date('Y-m-d', strtotime($request->date)))->Where('timeslots_id', '=', $request->time)->whereNotIn('status', ['reject', 'cancel'])->get()->groupBy('lt_id')->toArray();
         // get time table data
         $timetable = Timetable::where('day', $input_day)->where('timeslots_id', $request->time)->get()->groupBy('lt_id')->toArray();
         // set in array all lt id find in timetable and booking table
