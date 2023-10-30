@@ -19,7 +19,7 @@ class AdminNewUserRequest extends Notification
     protected $user;
     public function __construct($user)
     {
-        $this->user=$user;
+        $this->user = $user;
     }
 
     /**
@@ -42,8 +42,10 @@ class AdminNewUserRequest extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Hello admin you have recived a request by '.$this->user->name .'for signing up for LT booking system ')
-                    ->action('Open App', url('/'));
+            ->subject('New User Registration Request')
+            ->line('Hello Admin, you have received a new registration request from ' . $this->user->name . ' for the LT Booking System.')
+            ->line("We're excited to welcome a new user to our system!")
+            ->action('Open App', url('/'));
     }
 
     /**

@@ -44,6 +44,7 @@ class RequestApprovel extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
+                    ->subject('Request Approved')
                     ->line('Hi '.$this->user['name'].', Your login request '.$this->status.' role You can login using this url')
                     ->action('Login', url('/'))
                     ->line('Thank you for using our application!');

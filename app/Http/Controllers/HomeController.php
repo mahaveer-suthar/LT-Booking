@@ -178,8 +178,10 @@ class HomeController extends Controller
     public function cancelReq(Request $request)
     {
         $booking = Booking::find($request->id);
+        $user=User::find(Auth::user()->id);
         if ($booking) {
             $booking->update(['status' => 'cancel']);
+            dispatch(new EmailJob($user, $booking, 'Request cancelled'));
         }
         return response()->json(['status' => 200, 'msg' => 'Cancelled successfully']);
 

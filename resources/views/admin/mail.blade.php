@@ -146,7 +146,7 @@
                                                 {{ date('g:i A', strtotime(App\Models\Timeslots::find($data->timeslots_id)->start_time)) }}
                                                 To
                                                 {{ date('g:i A', strtotime(App\Models\Timeslots::find($data->timeslots_id)->end_time)) }}
-                                                Your booking status is {{$data->status}}
+                                                Your booking status is {{$data->status == 'cancel' ? 'cancelled' : $data->status}}
                                             </p>
                                             <p
                                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">

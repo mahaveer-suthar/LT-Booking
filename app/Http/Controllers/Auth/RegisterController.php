@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\AdminNewUserRequestJob;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Carbon\Carbon;
@@ -71,7 +72,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
@@ -79,5 +80,9 @@ class RegisterController extends Controller
             'status' => 'pending',
             'pw_change' => Carbon::now()
         ]);
+
+        // Dispatch the AdminNewUserRequestJob to notify the admin about the new user
+        AdminNewUserRequestJob::dispatch($user);
+        return $user;
     }
 }
