@@ -95,8 +95,9 @@
                         @foreach ($data->timetable as $item)
                             <tr>
                                 <td>{{ $item->day }}</td>
-                                <td>{{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->start_time)) }}To{{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->end_time)) }}
-                                </td>
+                                  <td>{{ \Carbon\Carbon::createFromFormat('H:i:s', $item->start_time)->format('h:i A') }} To {{ \Carbon\Carbon::createFromFormat('H:i:s', $item->end_time)->format('h:i A') }}</td>
+                                {{-- <td>{{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->start_time)) }}To{{ date('g:i A', strtotime(App\Models\Timeslots::find($item->timeslots_id)->end_time)) }}
+                                </td> --}}
                                 <td>{{ App\Models\Lt_rooms::find($item->lt_id)->room_name }}</td>
                                 <td>{{ $item->course }}</td>
                                 <td>{{ $item->branch }}</td>

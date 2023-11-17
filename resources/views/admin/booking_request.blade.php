@@ -34,10 +34,9 @@
                     @forelse ($bookings as $ind=> $book)
                         <tr>
                             <td scope="row">{{ date('d M Y', strtotime($book->date)) }}</td>
-                            <td>{{ date('g:i A', strtotime(App\Models\Timeslots::find($book->timeslots_id)->start_time)) }}
-                                -
-                                {{ date('g:i A', strtotime(App\Models\Timeslots::find($book->timeslots_id)->end_time)) }}
-                            </td>
+                            <td>{{ \Carbon\Carbon::createFromFormat('H:i:s', $book->start_time)->format('h:i A') }} To
+                                {{ \Carbon\Carbon::createFromFormat('H:i:s', $book->end_time)->format('h:i A') }}</td>
+
                             <td>{{ App\Models\User::find($book->user_id)->name }}</td>
                             <td scope="row">{{ App\Models\Lt_rooms::find($book->lt_id)->room_name }}</td>
                             <td>
@@ -48,6 +47,8 @@
 
                                     @case('reject')
                                         <span class="badge badge-pill badge-danger">Rejected</span>
+                                    @break
+
                                     @case('cancel')
                                         <span class="badge badge-pill badge-warning">Cancelled</span>
                                     @break
@@ -80,51 +81,51 @@
                 });
             });
             $('.status').on('change', function() {
-                        Swal.fire({
-                            title: 'Are you sure?',
-                            text: "You want to change request type",
-                            icon: 'info',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Change status'
-                        }).then((result) => {
-                                if (result.value) {
-                                    $("#spinner-div").show();
-                                    $.ajax('@if (auth()->user()->role==5){{route('dean.changeRequestStatus')}} @else {{ route('admin.changeRequestStatus') }} @endif', {
-                                            headers: {
-                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                            },
-                                            type: 'POST',
-                                            data: {
-                                                "_token": "{{ csrf_token() }}",
-                                                "id": $(this).data("booking_id"),
-                                                "status": $(this).find(":selected").val()
-                                            },
-                                            success: function(data, status, xhr) {
-                                                if (data.status == 200) {
-                                                        Swal.fire({
-                                                            title: 'Status changed successfully',
-                                                            icon: 'success',
-                                                            confirmButtonColor: '#3085d6',
-                                                            confirmButtonText: 'Ok'
-                                                        }).then((result) => {
-                                                            if (result.value) {
-                                                                window.location.reload()
-                                                            }
-                                                        })
-                                                    }
-                                                },
-                                                complete: function() {
-                                                        $('#spinner-div').hide();
-                                                    },
-                                                error: function(jqXhr, textStatus, errorMessage) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to change request type",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Change status'
+                }).then((result) => {
+                    if (result.value) {
+                        $("#spinner-div").show();
+                        $.ajax('@if (auth()->user()->role == 5){{ route('dean.changeRequestStatus') }} @else {{ route('admin.changeRequestStatus') }} @endif', {
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            type: 'POST',
+                            data: {
+                                "_token": "{{ csrf_token() }}",
+                                "id": $(this).data("booking_id"),
+                                "status": $(this).find(":selected").val()
+                            },
+                            success: function(data, status, xhr) {
+                                if (data.status == 200) {
+                                    Swal.fire({
+                                        title: 'Status changed successfully',
+                                        icon: 'success',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Ok'
+                                    }).then((result) => {
+                                        if (result.value) {
+                                            window.location.reload()
+                                        }
+                                    })
+                                }
+                            },
+                            complete: function() {
+                                $('#spinner-div').hide();
+                            },
+                            error: function(jqXhr, textStatus, errorMessage) {
 
-                                                }
-                                            });
-
-                                    }
-                                })
+                            }
                         });
+
+                    }
+                })
+            });
         </script>
     @endsection

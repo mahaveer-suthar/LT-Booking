@@ -21,11 +21,14 @@ class TimetableImport implements ToModel,WithHeadingRow
     
     public function model(array $row)
     {
+        // dd(gmdate("H:i:s", ($row['end_time']-25579) * 86400));
         // dd(Lt_rooms::where('room_name',$row['lt_name'])->first()->id);
         return new Timetable([
             'timetablesources_id'=>Timetablesource::where('is_active',"1")->first()->id,
             'day'=>$row['day'],
-            'timeslots_id'=>Timeslots::where('start_time',gmdate("H:i:s", ($row['start_time']-25579) * 86400))->where('end_time',gmdate("H:i:s", ($row['end_time']-25579) * 86400))->first()->id,
+            'start_time'=>gmdate("H:i:s", ($row['start_time']-25579) * 86400),
+            'end_time'=>gmdate("H:i:s", ($row['end_time']-25579) * 86400),
+            // 'timeslots_id'=>Timeslots::where('start_time',gmdate("H:i:s", ($row['start_time']-25579) * 86400))->where('end_time',gmdate("H:i:s", ($row['end_time']-25579) * 86400))->first()->id,
             'lt_id'=>Lt_rooms::where('room_name',$row['lt_name'])->first()->id,
             'teacher_name'=>$row['teacher_name'],
             'designation'=>$row['designation'],

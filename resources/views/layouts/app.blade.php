@@ -35,7 +35,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
-
+    {{-- for using flatepicker --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
 </head>
 
 <body>
@@ -98,7 +101,7 @@
                             class="fxt-btn">Book an LT</button>
                         <button type="button"
                             onclick="location.href='@if (auth()->user()->role == 3) {{ route('student.booking.show', Auth::user()->id) }} @else {{ route('teacher.booking.show', Auth::user()->id) }} @endif '"
-                            class="fxt-btn px-3" style="background-color: #3221d2;">Booking Status</button>
+                            class="fxt-btn px-3" style=" color:#ffffff; background-color: #3221d2;">Booking Status</button>
                     </div>
                 </div>
                 <div class="col-lg-8">
@@ -123,6 +126,8 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
     @yield('jquery')
 </body>
 

@@ -17,8 +17,8 @@
             @forelse ($data as $rec)
                 <tr>
                     <td scope="row">{{ date('d M Y', strtotime($rec->date)) }}</th>
-                    <td>{{ date('g:i A', strtotime(App\Models\Timeslots::find($rec->timeslots_id)->start_time)) }} To
-                        {{ date('g:i A', strtotime(App\Models\Timeslots::find($rec->timeslots_id)->end_time)) }}</td>
+                    <td>{{ \Carbon\Carbon::createFromFormat('H:i:s', $rec->start_time)->format('h:i A') }} To
+                        {{ \Carbon\Carbon::createFromFormat('H:i:s', $rec->end_time)->format('h:i A') }}</td>
                     <td scope="row">{{ App\Models\Lt_rooms::find($rec->lt_id)->room_name }}</td>
                     <td>
                         @switch($rec->status)
@@ -32,18 +32,21 @@
 
                             @case('reject')
                                 <span class="badge  badge-danger">Rejected</span>
+                            @break
+
                             @case('cancel')
                                 <span class="badge badge-warning">Cancelled</span>
                             @break
+
                             @default
                                 <span class="badge btn-danger btn-sm px-4">Not found</span>
                             @break
                         @endswitch
                     </td>
                     <td>
-                        @if ($rec->status !== 'cancel')
-                        <button class="btn btn-danger btn-sm" onclick="applyRequest({{$rec->id}})">cancel</button>
-                            
+                        @if (!in_array($rec->status, ['cancel', 'reject']))
+                            <button class="btn btn-danger btn-sm"
+                                onclick="applyRequest({{ $rec->id }})">cancel</button>
                         @endif
                     </td>
                 </tr>
@@ -65,48 +68,49 @@
                     }],
                 });
             });
+
             function applyRequest(lt_id) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You want to cancel request",
-                icon: 'info',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes Cancel !'
-            }).then((result) => {
-                if (result.value) {
-                    $.ajax('{{route('cancelRequest')}}', {
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        type: 'POST',
-                        data: {
-                            "_token": "{{ csrf_token() }}",
-                            "id":lt_id,
-                        },
-                        success: function(data, status, xhr) {
-                            console.log(data);
-                            if (data.status == 200) {
-                                Swal.fire({
-                                    title: data.msg,
-                                    icon: 'success',
-                                    confirmButtonColor: '#3085d6',
-                                    confirmButtonText: 'Ok'
-                                }).then((result) => {
-                                    if (result.value) {
-                                        window.location.reload()
-                                    }
-                                })
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to cancel request",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes Cancel !'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax('{{ route('cancelRequest') }}', {
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            type: 'POST',
+                            data: {
+                                "_token": "{{ csrf_token() }}",
+                                "id": lt_id,
+                            },
+                            success: function(data, status, xhr) {
+                                console.log(data);
+                                if (data.status == 200) {
+                                    Swal.fire({
+                                        title: data.msg,
+                                        icon: 'success',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Ok'
+                                    }).then((result) => {
+                                        if (result.value) {
+                                            window.location.reload()
+                                        }
+                                    })
+                                }
+                            },
+                            error: function(jqXhr, textStatus, errorMessage) {
+
                             }
-                        },
-                        error: function(jqXhr, textStatus, errorMessage) {
+                        });
 
-                        }
-                    });
-
-                }
-            })
-        }
+                    }
+                })
+            }
         </script>
     @endsection

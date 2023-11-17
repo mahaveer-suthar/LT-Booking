@@ -17,7 +17,9 @@ class CreateTimetablesTable extends Migration
             $table->id();
             $table->foreignId('timetablesources_id')->constrained('timetablesources')->cascadeOnDelete();
             $table->string('day');
-            $table->foreignId('timeslots_id')->constrained('timeslots')->cascadeOnDelete();
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->foreignId('timeslots_id')->nullable()->constrained('timeslots')->cascadeOnDelete();
             $table->foreignId('lt_id')->constrained('lt_rooms')->cascadeOnDelete();
             $table->string('teacher_name')->nullable();
             $table->string('designation')->nullable();

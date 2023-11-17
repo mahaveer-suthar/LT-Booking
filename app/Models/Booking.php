@@ -15,7 +15,9 @@ class Booking extends Model
         'user_id',
         'timeslots_id',
         'lt_id',
-        'status'
+        'status',
+        'start_time',
+        'end_time'
     ];
     public function users(){
         return $this->BelongsTo(User::class,'user_id','id');
