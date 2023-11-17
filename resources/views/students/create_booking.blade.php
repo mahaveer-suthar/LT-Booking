@@ -142,7 +142,7 @@
             minDate: "today",
             maxDate: "today",
             minTime: "08:00", // Set the minimum time to 8:00 AM
-            maxTime: "22:00", // Set the maximum time to 10:00 PM
+            maxTime: "21:00", // Set the maximum time to 10:00 PM
             enableSeconds: false, // Disable seconds input
             clickOpens: true,
             minuteIncrement: 30,

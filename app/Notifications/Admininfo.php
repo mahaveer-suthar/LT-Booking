@@ -45,7 +45,7 @@ class Admininfo extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Hello dean you have recived a request by '.User::find($this->book->user_id)->name.' for booking '.Lt_rooms::find($this->book->lt_id)->room_name.' on '.date('g:i A', strtotime(Timeslots::find($this->book->timeslots_id)->start_time)).' To '.date('g:i A', strtotime(Timeslots::find($this->book->timeslots_id)->end_time)))
+                    ->line('Hello dean you have recived a request by '.User::find($this->book->user_id)->name.' for booking '.Lt_rooms::find($this->book->lt_id)->room_name.' on '.date('g:i A', strtotime($this->book->start_time)).' To '.date('g:i A', strtotime($this->book->end_time)))
                     ->action('Action ', url('/'));
 
     }

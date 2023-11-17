@@ -130,23 +130,24 @@
                                     style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"
                                     width="100%">
                                     <tr>
-                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"
-                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"
+                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" <td
+                                            style="font-family: sans-serif; font-size: 14px; vertical-align: top;"
                                             valign="top">
                                             <p
                                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">
-                                                Hi {{App\Models\User::find($data->user_id)->name}}</p>
+                                                Hi {{ App\Models\User::find($data->user_id)->name }}</p>
                                             <p
                                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">
                                             </p>
                                             <p
                                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">
                                                 We are writing to inform that your booking request is for date
-                                                -: {{ date('d-M-Y',strtotime( $data->date))}} on
-                                                {{ date('g:i A', strtotime(App\Models\Timeslots::find($data->timeslots_id)->start_time)) }}
+                                                -: {{ date('d-M-Y', strtotime($data->date)) }} on
+                                                {{ \Carbon\Carbon::createFromFormat('H:i:s', $data->start_time)->format('h:i A') }}
                                                 To
-                                                {{ date('g:i A', strtotime(App\Models\Timeslots::find($data->timeslots_id)->end_time)) }}
-                                                Your booking status is {{$data->status == 'cancel' ? 'cancelled' : $data->status}}
+                                                {{ \Carbon\Carbon::createFromFormat('H:i:s', $data->end_time)->format('h:i A') }}
+                                                Your booking status is
+                                                {{ $data->status == 'cancel' ? 'cancelled' : $data->status }}
                                             </p>
                                             <p
                                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">
